@@ -1,0 +1,24 @@
+version: '2'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    volumes:
+      - ./config:/var/www/config
+      - ./backup:/var/www/backup
+  db:
+    restart: always
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme #CHANGE THIS!
+      - MYSQL_USER=syspass
+      - MYSQL_PASSWORD=changeme #CHANGE THIS!
+      - MYSQL_DATABASE=syspass
+    volumes:
+      - ./db/:/var/lib/mysql
