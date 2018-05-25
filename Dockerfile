@@ -31,7 +31,9 @@ RUN mkdir /var/www
 
 RUN cd /tmp && wget https://github.com/nuxsmin/sysPass/archive/${SYSPASS_BRANCH}.zip \
   && unzip ${SYSPASS_BRANCH}.zip \
-  && mv sysPass-${SYSPASS_BRANCH}/* /var/www
+  && mv sysPass-${SYSPASS_BRANCH}/* /var/www \
+  && rm ${SYSPASS_BRANCH}.zip \
+  && rm -r sysPass-${SYSPASS_BRANCH}
 
 # Permissions
 RUN mkdir /var/session && \
@@ -50,4 +52,3 @@ RUN chmod -R 750 /scripts
 RUN mv scripts/start.sh /start.sh
 
 CMD ["/start.sh"]
-#ENTRYPOINT ["/bin/s6-svscan", "/etc/services.d", "/start.sh"]
