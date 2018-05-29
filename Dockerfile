@@ -46,7 +46,6 @@ VOLUME /var/www/config
 VOLUME /var/www/backup
 VOLUME /var/session
 
-EXPOSE 80
 COPY scripts /scripts
 RUN chmod -R 750 /scripts
 RUN mv scripts/start.sh /start.sh

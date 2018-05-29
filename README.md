@@ -1,0 +1,64 @@
+# Syspass Docker Image
+
+This Docker image is based on [Kolaente/sysspass-docker](https://github.com/kolaente/syspass-docker)
+
+Made with Alpine, NGINX and PHP 7.
+
+This is an unofficial Dockerimage for the [Syspass Passwordmanager](http://www.syspass.org/).
+
+## Usage
+
+Simply run
+
+```bash
+docker run -p 80:80 -d teknakat/syspass
+```
+
+The Container needs another DB-Container which holds the database. You can use [MariaDB](https://hub.docker.com/_/mariadb/)/[Mysql](https://hub.docker.com/_/mysql/).
+
+## Volumes
+
+The container has three volumes:
+* `/var/www/config`. Holds the configuration files.
+* `/var/www/backup`. Holds automatically generated backups made by Syspass.
+* `/var/session`. Holds PHP session data. Very useful when using a loadbalancer with mutliple instances of Syspass.
+
+## Docker-Compose
+
+Probably the easiest way to run the image is by using [docker-compose](https://docs.docker.com/compose/):
+
+**Note:** You really should change `MYSQL_ROOT_PASSWORD` and `MYSQL_PASSWORD` when running in production!
+
+```yaml
+version: '2'
+services:
+  app:
+    image: teknakat/syspass
+    restart: always
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    volumes:
+      - ./config:/var/www/config
+      - ./backup:/var/www/backup
+  db:
+    restart: always
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme #CHANGE THIS!
+      - MYSQL_USER=syspass
+      - MYSQL_PASSWORD=changeme #CHANGE THIS!
+      - MYSQL_DATABASE=syspass
+    volumes:
+      - ./db/:/var/lib/mysql
+```
+
+## Contributing
+
+If you run into any issues with the image or discover a bug, feel free to [create a new issue](https://github.com/TekniikanAkateemiset/syspass-docker/issues/new) on Github.
+
+Or, if you have any improvements to the image, fork and create a pull request.
+
+General help and feedback is below in the comments.
+
