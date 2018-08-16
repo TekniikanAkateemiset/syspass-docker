@@ -54,6 +54,9 @@ services:
       - ./db/:/var/lib/mysql
 ```
 
+### Environment variables
+* NGINX_PORT - Set custom port for Nginx
+
 ## Contributing
 
 If you run into any issues with the image or discover a bug, feel free to [create a new issue](https://github.com/TekniikanAkateemiset/syspass-docker/issues/new) on Github.
